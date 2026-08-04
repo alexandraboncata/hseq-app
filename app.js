@@ -99,12 +99,20 @@ document.getElementById("btn-conform").onclick = async () => {
         pendingEntry.observatii = null;
         pendingEntry.poza = null;
 
+        console.log("SALVEZ:", pendingEntry);
+
         await saveToSupabase(pendingEntry);
+
+        alert("SAVE TO SUPABASE OK");
+
         await saveToHistory(pendingEntry);
+
+        alert("SAVE TO HISTORY OK");
 
         closePopup();
 
     } catch (err) {
+        console.error("EROARE:", err);
         alert("EROARE: " + err);
     }
 };
@@ -245,6 +253,8 @@ async function scanNFC() {
 //--------------------------------------------------
 async function saveToSupabase(entry) {
 
+ alert("A intrat in saveToSupabase");
+
     const payload = {
         id_echipament: entry.id_echipament,
         tip: entry.tip,
@@ -258,12 +268,18 @@ async function saveToSupabase(entry) {
     const checkUrl =
         `${SUPABASE_URL}/rest/v1/echipamente?id_echipament=eq.${entry.id_echipament}&select=*`;
 
-    const existing = await fetch(checkUrl, {
-        headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: `Bearer ${SUPABASE_KEY}`
-        }
-    }).then(r => r.json());
+   const response = await fetch(checkUrl, {
+    headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`
+    }
+});
+
+alert("STATUS = " + response.status);
+
+const existing = await response.json();
+
+console.log(existing);
 
     if (existing.length > 0) {
 
