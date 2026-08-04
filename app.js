@@ -91,29 +91,22 @@ function closePopup() {
 // CONFORM
 //--------------------------------------------------
 document.getElementById("btn-conform").onclick = async () => {
-    pendingEntry.stare = "conform";
-    pendingEntry.observatii = null;
-    pendingEntry.poza = null;
 
+    alert("AM APASAT CONFORM");
 
-    await saveToSupabase(pendingEntry);
-    await saveToHistory(pendingEntry);
+    try {
+        pendingEntry.stare = "conform";
+        pendingEntry.observatii = null;
+        pendingEntry.poza = null;
 
+        await saveToSupabase(pendingEntry);
+        await saveToHistory(pendingEntry);
 
-    addCard({
-        ...pendingEntry,
-        idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
-    });
+        closePopup();
 
-
-    closePopup();
-};
- 
-
-} catch (err) {
-console.error("EROARE SALVARE:", err);
-alert("EROARE: " + err);
-}
+    } catch (err) {
+        alert("EROARE: " + err);
+    }
 };
 
 //--------------------------------------------------
