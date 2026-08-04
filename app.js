@@ -91,22 +91,23 @@ function closePopup() {
 // CONFORM
 //--------------------------------------------------
 document.getElementById("btn-conform").onclick = async () => {
-try {
-pendingEntry.stare = "conform";
-pendingEntry.observatii = null;
-pendingEntry.poza = null;
+    pendingEntry.stare = "conform";
+    pendingEntry.observatii = null;
+    pendingEntry.poza = null;
 
-console.log("SALVEZ:", pendingEntry);
 
-await saveToSupabase(pendingEntry);
-await saveToHistory(pendingEntry);
+    await saveToSupabase(pendingEntry);
+    await saveToHistory(pendingEntry);
 
-addCard({
-...pendingEntry,
-idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
-});
 
-closePopup();
+    addCard({
+        ...pendingEntry,
+        idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
+    });
+
+
+    closePopup();
+};
  
 
 } catch (err) {
