@@ -1,18 +1,17 @@
-self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open("hse-nfc-cache").then(cache => {
-            return cache.addAll([
-                "./",
-                "./index.html",
-                "./app.js",
-                "./manifest.json"
-            ]);
-        })
-    );
+self.addEventListener("install", (event) => {
+    self.skipWaiting();
 });
 
-self.addEventListener("fetch", event => {
-    event.respondWith(
-        caches.match(event.request).then(resp => resp || fetch(event.request))
+self.addEventListener("activate", (event) => {
+    event.waitUntil(
+        caches.keys().then((names) =>
+            Promise.all(names.map((name) => caches.delete(name)))
+        )
     );
+
+    self.clients.claim();
+});
+
+self.addEventListener("fetch", (event) => {
+    event.respondWith(fetch(event.request));
 });
