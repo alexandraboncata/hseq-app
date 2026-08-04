@@ -1,11 +1,10 @@
-alert("VERSIUNEA NOUA");
 console.log("✅-app.js loaded");
 
 //--------------------------------------------------
 // CONFIG SUPABASE
 //--------------------------------------------------
-const SUPABASE_URL = "https://ehquxvfljkecradjkjiz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_8XzeOcD_7oB4AwLQldeWLA_wK_giIfQ";
+const SUPABASE_URL = "https://rrtyjtbcxgacldniuybn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BgWYudD6xuJbxRuZHt3mHg_35f1e6j6";
 
 //--------------------------------------------------
 // VARIABILE GLOBALE
@@ -15,7 +14,7 @@ let lastScanTime = 0;
 let isScanning = false;
 let pendingEntry = null;
 let lastScannedID = null;
- 
+
 //--------------------------------------------------
 // DETECTARE TIP DIN ID (VERSIUNE FINALĂ)
 //--------------------------------------------------
@@ -92,30 +91,19 @@ function closePopup() {
 // CONFORM
 //--------------------------------------------------
 document.getElementById("btn-conform").onclick = async () => {
+    pendingEntry.stare = "conform";
+    pendingEntry.observatii = null;
+    pendingEntry.poza = null;
 
-    alert("AM APASAT CONFORM");
+    await saveToSupabase(pendingEntry);
+    await saveToHistory(pendingEntry);
 
-    try {
-        pendingEntry.stare = "conform";
-        pendingEntry.observatii = null;
-        pendingEntry.poza = null;
+    addCard({
+        ...pendingEntry,
+        idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
+    });
 
-        console.log("SALVEZ:", pendingEntry);
-
-        await saveToSupabase(pendingEntry);
-
-        alert("SAVE TO SUPABASE OK");
-
-        await saveToHistory(pendingEntry);
-
-        alert("SAVE TO HISTORY OK");
-
-        closePopup();
-
-    } catch (err) {
-        console.error("EROARE:", err);
-        alert("EROARE: " + err);
-    }
+    closePopup();
 };
 
 //--------------------------------------------------
@@ -254,8 +242,6 @@ async function scanNFC() {
 //--------------------------------------------------
 async function saveToSupabase(entry) {
 
- alert("A intrat in saveToSupabase");
-
     const payload = {
         id_echipament: entry.id_echipament,
         tip: entry.tip,
@@ -269,18 +255,12 @@ async function saveToSupabase(entry) {
     const checkUrl =
         `${SUPABASE_URL}/rest/v1/echipamente?id_echipament=eq.${entry.id_echipament}&select=*`;
 
-   const response = await fetch(checkUrl, {
-    headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`
-    }
-});
-
-alert("STATUS = " + response.status);
-
-const existing = await response.json();
-
-console.log(existing);
+    const existing = await fetch(checkUrl, {
+        headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+    }).then(r => r.json());
 
     if (existing.length > 0) {
 
