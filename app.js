@@ -14,7 +14,7 @@ let lastScanTime = 0;
 let isScanning = false;
 let pendingEntry = null;
 let lastScannedID = null;
-
+ 
 //--------------------------------------------------
 // DETECTARE TIP DIN ID (VERSIUNE FINALĂ)
 //--------------------------------------------------
