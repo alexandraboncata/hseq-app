@@ -3,7 +3,7 @@ console.log("✅-app.js loaded");
 //--------------------------------------------------
 // CONFIG SUPABASE
 //--------------------------------------------------
-const SUPABASE_URL = "https://rrtyjtbcxgacldniuybn.supabase.co";
+const SUPABASE_URL = "https://ehquxvfljkecradjkjiz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BgWYudD6xuJbxRuZHt3mHg_35f1e6j6";
 
 //--------------------------------------------------
