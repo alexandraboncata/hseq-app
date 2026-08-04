@@ -1,3 +1,4 @@
+alert("VERSIUNEA NOUA");
 console.log("✅-app.js loaded");
 
 //--------------------------------------------------
