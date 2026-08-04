@@ -91,19 +91,28 @@ function closePopup() {
 // CONFORM
 //--------------------------------------------------
 document.getElementById("btn-conform").onclick = async () => {
-    pendingEntry.stare = "conform";
-    pendingEntry.observatii = null;
-    pendingEntry.poza = null;
+try {
+pendingEntry.stare = "conform";
+pendingEntry.observatii = null;
+pendingEntry.poza = null;
 
-    await saveToSupabase(pendingEntry);
-    await saveToHistory(pendingEntry);
+console.log("SALVEZ:", pendingEntry);
 
-    addCard({
-        ...pendingEntry,
-        idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
-    });
+await saveToSupabase(pendingEntry);
+await saveToHistory(pendingEntry);
 
-    closePopup();
+addCard({
+...pendingEntry,
+idDisplay: pendingEntry.id_echipament.replace(/^\w+_/, "")
+});
+
+closePopup();
+ 
+
+} catch (err) {
+console.error("EROARE SALVARE:", err);
+alert("EROARE: " + err);
+}
 };
 
 //--------------------------------------------------
